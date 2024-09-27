@@ -1,2 +1,2 @@
 class EnrollmentManagement: 
-    pass
+    print("Hello Enrollment Management")
