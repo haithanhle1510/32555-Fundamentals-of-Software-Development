@@ -2,7 +2,7 @@ class User:
     print('Hello User')
 
 class Student: 
-    pass
+    print('Hello Student')
 
 class Admin: 
     pass
