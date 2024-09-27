@@ -1,5 +1,5 @@
 class User: 
-    pass
+    print('Hello User')
 
 class Student: 
     pass
