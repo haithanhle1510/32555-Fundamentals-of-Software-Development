@@ -1,36 +1,39 @@
+from typing import List
+from utils.helpers import validate_email
+
 class User:
-    def __init__(self, name:str, email:str, password:str):
+    def __init__(self, name:str, email:str, password:str)-> None:
         self.name = name
         self.email = email
         self.password = password
 
-    def login(self, email, password):
+    def login(self, email:str, password:str):
         if self.email == email and self.password == password:
             return True
         else:
             return False
 
 class Student(User):
-    def __init__(self, name, email, password, student_id):
+    def __init__(self, name:str, email:str, password:str, student_id:int)-> None:
         super().__init__(name, email, password)
-        self.student_id = student_id
-        self.enrollment_list = []
+        self.student_id:int = student_id
+        self.enrollment_list:List[str] = []
 
     def register(self):
         # Registration logic here
         pass
 
-    def change_password(self, new_password):
+    def change_password(self, new_password:str)->str:
         # Password change logic here
         self.password = new_password
 
-    def enroll_subject(self, subject):
+    def enroll_subject(self, subject:List[str])->List[str]:
         self.enrollment_list.append(subject)
 
-    def remove_subject(self, subject):
+    def remove_subject(self, subject:List[str])->List[str]:
         self.enrollment_list.remove(subject)
 
-    def view_enrollment_list(self):
+    def view_enrollment_list(self)->List[str]:
         return self.enrollment_list
 
 class Admin(User):
@@ -60,6 +63,8 @@ class Subject:
         self.subject_id = subject_id
         self.subject_name = subject_name
         self.semester = semester
+        
+        
 
 # Test Case
 student1 = Student("John Doe", "john.doe@university.com", "Password123", "000001")
