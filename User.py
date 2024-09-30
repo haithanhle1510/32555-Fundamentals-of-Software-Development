@@ -67,7 +67,8 @@ class Subject:
         
 
 # Test Case
-student1 = Student("John Doe", "john.doe@university.com", "Password123", "000001")
-subject1 = Subject("001", "Data Structures", "Spring")
-student1.enroll_subject(subject1)
-print(student1.view_enrollment_list())
+if __name__ == "__main__":
+    student1 = Student("John Doe", "john.doe@university.com", "Password123", "000001")
+    subject1 = Subject("001", "Data Structures", "Spring")
+    student1.enroll_subject(subject1)
+    print(student1.view_enrollment_list())
