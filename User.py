@@ -1,5 +1,6 @@
 from typing import List
 from utils.helpers import validate_email
+from .Subject import Subject
 
 class User:
     def __init__(self, name:str, email:str, password:str)-> None:
@@ -58,11 +59,7 @@ class Admin(User):
     def clear_data(self):
         pass
 
-class Subject:
-    def __init__(self, subject_id, subject_name, semester):
-        self.subject_id = subject_id
-        self.subject_name = subject_name
-        self.semester = semester
+
         
         
 
