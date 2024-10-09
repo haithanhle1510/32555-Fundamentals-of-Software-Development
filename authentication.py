@@ -4,7 +4,7 @@ from classes.User import Student
 
 
 def process_student_register():
-    print("Student resiter")
+    print("Student register")
     is_registered_sucessfully = False
     while True:
         email = input("Please enter your email: ")
@@ -47,7 +47,6 @@ def post_student_register(email, password, name):
 def is_email_existed(email):
     studentList = read_file_and_convert_to_list('student.data')
     for student in studentList:
-        print(f'email: {student['email']}')
         if student['email'] == email:
             return True  # Account already exists
 
