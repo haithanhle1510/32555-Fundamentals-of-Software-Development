@@ -1,45 +1,45 @@
 import re
-import json
+import random
+from utils.file_operation import read_file_and_convert_to_list
 
 
-def validate_email(email:str)->bool:
-        """
-        Args: email: str \n
-        validates email i.e checks weather email ends with "@university.com"
-        """
-        pattern = r'^[a-zA-Z0-9._%+-]+@university\.com$'
-        return re.match(pattern, email) is not None
+def validate_email(email: str) -> bool:
+    """
+    Args: email: str \n
+    validates email i.e checks weather email ends with "@university.com"
+    """
+    pattern = r'^[a-zA-Z0-9._%+-]+@university\.com$'
+    return re.match(pattern, email) is not None
 
 
-# Function to load student data from file
-def load_student_data(filename='student.data'):
-    try:
-        with open(filename, 'r') as file:
-            return json.load(file)
-    except FileNotFoundError:
-        return []  # Return an empty list if the file doesn't exist
-    except json.JSONDecodeError:
-        print("Error reading the student data file. Please check the file format.")
-        return []
+def is_valid_password(password):
+    # Check if the password starts with an upper-case character
+    if not password[0].isupper():
+        return False
 
-# Function to check registration
-def check_registration(student_id, email, password, filename='student.data'):
-    students = load_student_data(filename)
-    
-    for student in students:
-        if (student['student_id'] == student_id and 
-            student['email'] == email and 
-            student['password'] == password):
-            return True  # Registration is valid
-    
-    return False  # Registration not found
+    # Check if the password contains at least five letters
+    letters = re.findall(r'[A-Za-z]', password)
+    if len(letters) < 5:
+        return False
 
-if __name__ == "__main__":
-    student_id = input("Enter Student ID: ")
-    email = input("Enter Email: ")
-    password = input("Enter Password: ")
+    # Check if the password ends with three or more digits
+    digits = re.findall(r'\d+', password)
+    if not digits or len(digits[-1]) < 3:
+        return False
 
-    if check_registration(student_id, email, password):
-        print("Registration is valid.")
-    else:
-        print("Invalid registration.")
+    return True
+
+
+def generate_new_student_id() -> str:
+    existing_ids = list(
+        map(lambda student: student['student_id'], read_file_and_convert_to_list('student.data')))
+    while True:
+        student_id = random.randint(1, 999999)
+        # Convert to six digits with leading zeros if necessary
+        student_id_str = f'{student_id:06}'
+
+        # Ensure the ID is unique
+        if student_id_str not in existing_ids:
+            break
+
+    return student_id_str
