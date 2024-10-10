@@ -1,4 +1,3 @@
-from utils.helpers import validate_email
 from authentication import process_student_register
 
 
@@ -36,7 +35,7 @@ def student_system():
         if choice == '1':
             print("Student login...")
         elif choice == '2':
-            print("Student register...")
+            process_student_register()
         elif choice == '3':
             print("Returning to main menu...")
             break
