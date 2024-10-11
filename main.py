@@ -1,4 +1,5 @@
 from authentication import process_student_register, process_student_login
+from admin_function import view_all_students
 from utils.helpers import print_errors_message, print_sucessfuly_message, get_warning_message, print_infomation_message, print_option_message
 from utils.file_operation import clear_file
 from classes.User import Student
@@ -64,7 +65,7 @@ def admin_system():
     while True:
         print_infomation_message("ADMIN SYSTEM")
         print_option_message("  1) Clear database")
-        print_option_message("  2) Get all students")
+        print_option_message("  2) View all students")
         print_option_message("  3) Get students by grade")
         print_option_message("  4) Catergories students by PASS/FAIL")
         print_option_message("  5) Remove students by id")
@@ -79,7 +80,8 @@ def admin_system():
                 clear_file('student.data')
                 print_sucessfuly_message("System's data has been cleared.")
         elif choice == '2':
-            print_infomation_message("Get all students...")
+            print_infomation_message("View all students...")
+            view_all_students()
         elif choice == '3':
             print_infomation_message("Get students by grade...")
         elif choice == '4':
