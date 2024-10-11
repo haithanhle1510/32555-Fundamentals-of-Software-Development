@@ -11,16 +11,15 @@ def process_student_register():
         if is_email_existed(email) == False:
             password = input("Please enter your password: ")
 
-            if validate_email(email) is False:
-                {
-                    print_errors_message(
-                        "Something went wrong with your email, please re-enter, make sure your email is correctly formatted")
-                }
-            if is_valid_password(password) is False:
-                {
+            if validate_email(email) is False or is_valid_password(password) is False:
+                if is_valid_password(password) is False:
                     print_errors_message(
                         "Something went wrong with your password, please re-enter, make sure your email is correctly formatted")
-                }
+
+                if validate_email(email) is False:
+                    print_errors_message(
+                        "Something went wrong with your email, please re-enter, make sure your email is correctly formatted")
+
             else:
                 name = input("Please enter name: ")
                 print_sucessfuly_message("Successfully registered")

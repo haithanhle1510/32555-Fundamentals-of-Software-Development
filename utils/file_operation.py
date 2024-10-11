@@ -29,3 +29,14 @@ def write_new_data_to_file(file_path, content):
     # Write the updated data back to the file
     with open(file_path, 'w') as file:
         json.dump(data, file, indent=4)
+
+
+def clear_file(file_path):
+    try:
+        with open(file_path, 'w') as file:
+            pass
+        print(f"File '{file_path}' has been cleared.")
+    except FileNotFoundError:
+        print(f"File '{file_path}' not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
