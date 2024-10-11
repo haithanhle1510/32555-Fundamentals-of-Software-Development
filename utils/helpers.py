@@ -1,6 +1,7 @@
 import re
 import random
 from utils.file_operation import read_file_and_convert_to_list
+from colorama import Fore, Back, Style
 
 
 def validate_email(email: str) -> bool:
@@ -43,3 +44,23 @@ def generate_new_student_id() -> str:
             break
 
     return student_id_str
+
+
+def print_errors_message(content):
+    print(f"{Fore.RED} {content}{Fore.RESET}")
+
+
+def print_sucessfuly_message(content):
+    print(f"{Fore.GREEN} {content}{Fore.RESET}")
+
+
+def print_warning_message(content):
+    print(f"{Fore.YELLOW} {content}{Fore.RESET}")
+
+
+def print_infomation_message(content):
+    print(f"{Fore.BLUE} {content}{Fore.RESET}")
+
+
+def print_option_message(content):
+    print(f"{Fore.MAGENTA} {content}{Fore.RESET}")

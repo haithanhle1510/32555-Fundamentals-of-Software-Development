@@ -1,5 +1,4 @@
 from typing import List
-from utils.helpers import generate_new_student_id
 from .Subject import Subject
 
 
@@ -17,9 +16,9 @@ class User:
 
 
 class Student(User):
-    def __init__(self, name: str, email: str, password: str) -> None:
+    def __init__(self, email: str, password: str,  name: str, student_id) -> None:
         super().__init__(name, email, password)
-        self.student_id: str = generate_new_student_id()
+        self.student_id: str = student_id
         self.enrollment_list: List[str] = []
 
     def change_password(self, new_password: str) -> str:
