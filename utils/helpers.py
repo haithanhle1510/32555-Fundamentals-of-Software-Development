@@ -1,6 +1,8 @@
 import re
 import random
+import bcrypt
 from utils.file_operation import read_file_and_convert_to_list
+from colorama import Fore, Back, Style
 
 
 def validate_email(email: str) -> bool:
@@ -43,3 +45,31 @@ def generate_new_student_id() -> str:
             break
 
     return student_id_str
+
+
+def generate_hash_password(password: str) -> str:
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+
+def validate_password(password: str, hashPassword: str) -> bool:
+    return bcrypt.checkpw(password.encode('utf-8'), hashPassword.encode('utf-8'))
+
+
+def print_errors_message(content):
+    print(f"{Fore.RED} {content}{Fore.RESET}")
+
+
+def print_sucessfuly_message(content):
+    print(f"{Fore.GREEN} {content}{Fore.RESET}")
+
+
+def print_warning_message(content):
+    print(f"{Fore.YELLOW} {content}{Fore.RESET}")
+
+
+def print_infomation_message(content):
+    print(f"{Fore.BLUE} {content}{Fore.RESET}")
+
+
+def print_option_message(content):
+    print(f"{Fore.MAGENTA} {content}{Fore.RESET}")
