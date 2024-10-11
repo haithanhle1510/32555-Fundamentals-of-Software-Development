@@ -8,7 +8,6 @@ def process_student_register():
     is_registered_sucessfully = False
     while True:
         email = input("Please enter your email: ")
-        is_email_existed(email)
         if is_email_existed(email) == False:
             password = input("Please enter your password: ")
 
@@ -51,3 +50,38 @@ def is_email_existed(email):
             return True  # Account already exists
 
     return False  # Account not found
+
+
+def process_student_login():
+    print("Student login")
+    is_login_sucessfully = False
+    while True:
+        email = input("Please enter your email: ")
+        password = input("Please enter your password: ")
+        if is_email_existed(email) == False:
+            print("Your email not exists, please try again or register new account.")
+
+            retry = input("Do you want to try again?(Y/N):")
+            if retry == "N":
+                break
+        else:
+            if (validate_student_account(email, password)) == False:
+                print("Incorrect password, please try again.")
+
+                retry = input("Do you want to try again?(Y/N):")
+                if retry == "N":
+                    break
+            else:
+                print("Successfully logged in")
+                is_login_sucessfully = True
+                break
+
+    return is_login_sucessfully
+
+
+def validate_student_account(email, password):
+    studentList = read_file_and_convert_to_list('student.data')
+    for student in studentList:
+        if student['email'] == email and student['password'] == password:
+            return True  # Account is valid
+    return False  # Account is invalid

@@ -1,4 +1,4 @@
-from authentication import process_student_register
+from authentication import process_student_register, process_student_login
 
 
 def main():
@@ -33,7 +33,7 @@ def student_system():
         choice = input("Enter your choice: ")
 
         if choice == '1':
-            print("Student login...")
+            process_student_login()
         elif choice == '2':
             process_student_register()
         elif choice == '3':
