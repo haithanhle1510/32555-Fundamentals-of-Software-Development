@@ -63,8 +63,8 @@ def print_sucessfuly_message(content):
     print(f"{Fore.GREEN} {content}{Fore.RESET}")
 
 
-def print_warning_message(content):
-    print(f"{Fore.YELLOW} {content}{Fore.RESET}")
+def get_warning_message(content):
+    return (f"{Fore.YELLOW} {content}{Fore.RESET}")
 
 
 def print_infomation_message(content):

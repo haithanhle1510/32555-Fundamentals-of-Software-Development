@@ -1,6 +1,7 @@
 from authentication import process_student_register, process_student_login
-from utils.helpers import print_errors_message, print_sucessfuly_message, print_infomation_message, print_option_message
-from colorama import Fore, Back, Style
+from admin_function import view_all_students
+from utils.helpers import print_errors_message, print_sucessfuly_message, get_warning_message, print_infomation_message, print_option_message
+from utils.file_operation import clear_file
 from classes.User import Student
 
 
@@ -63,14 +64,31 @@ def student_system():
 def admin_system():
     while True:
         print_infomation_message("ADMIN SYSTEM")
-        print_option_message("  1) Log in")
-        print_option_message("  2) Back to main menu")
+        print_option_message("  1) Clear database")
+        print_option_message("  2) View all students")
+        print_option_message("  3) Get students by grade")
+        print_option_message("  4) Catergories students by PASS/FAIL")
+        print_option_message("  5) Remove students by id")
+        print_option_message("  6) Back to main menu")
 
         choice = input("Enter your choice: ")
 
         if choice == '1':
-            print_infomation_message("Admin login...")
+            choice = input(get_warning_message(
+                "Are you sure to clear system's data?(Y/N):"))
+            if choice == 'Y':
+                clear_file('student.data')
+                print_sucessfuly_message("System's data has been cleared.")
         elif choice == '2':
+            print_infomation_message("View all students...")
+            view_all_students()
+        elif choice == '3':
+            print_infomation_message("Get students by grade...")
+        elif choice == '4':
+            print_infomation_message("Catergories students by PASS/FAIL...")
+        elif choice == '5':
+            print_infomation_message("Remove students by id...")
+        elif choice == '6':
             print_infomation_message("Returning to main menu...")
             break
         else:
