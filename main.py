@@ -3,7 +3,10 @@ from admin_function import view_all_students
 from utils.helpers import print_errors_message, print_sucessfuly_message, get_warning_message, print_infomation_message, print_option_message
 from utils.file_operation import clear_file
 from classes.User import Student
-
+from change_password import modify_password
+from enroll_subject import register_courses
+from remove_subject import delete_course
+from view_enrollment_list import display_courses
 
 def main():
     while True:
@@ -107,12 +110,17 @@ def student_system_menu(student: Student):
         choice = input("Enter your choice: ")
 
         if choice == '1':
+            student_id = student.read_student_informations()['student_id'] 
+            modify_password(student_id)
             print_infomation_message("Change password...")
         elif choice == '2':
+            register_courses(student_id)
             print_infomation_message("Enrol in subject...")
         elif choice == '3':
+            delete_course(student_id)
             print_infomation_message("Remove a subject...")
         elif choice == '4':
+            display_courses(student_id)
             print_infomation_message("Show enrolled subject...")
         elif choice == '5':
             print_infomation_message("Exitting...")
