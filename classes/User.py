@@ -28,7 +28,7 @@ class Student(User):
     def view_enrollment_list(self) -> List[str]:
         return self.enrollment_list
 
-    def read_student_informations(self):
+    def read_student_information(self):
         return {
             'name': self.name,
             'email': self.email,

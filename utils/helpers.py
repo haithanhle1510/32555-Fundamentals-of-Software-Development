@@ -3,7 +3,7 @@ import random
 import bcrypt
 from tabulate import tabulate
 from utils.file_operation import read_file_and_convert_to_list
-from colorama import Fore, Back, Style
+from colorama import Fore
 
 
 def validate_email(email: str) -> bool:
@@ -60,7 +60,7 @@ def print_errors_message(content):
     print(f"{Fore.RED} {content}{Fore.RESET}")
 
 
-def print_sucessfuly_message(content):
+def print_successful_message(content):
     print(f"{Fore.GREEN} {content}{Fore.RESET}")
 
 
@@ -68,7 +68,7 @@ def get_warning_message(content):
     return (f"{Fore.YELLOW} {content}{Fore.RESET}")
 
 
-def print_infomation_message(content):
+def print_information_message(content):
     print(f"{Fore.BLUE} {content}{Fore.RESET}")
 
 

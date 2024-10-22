@@ -1,7 +1,5 @@
-from utils.file_operation import update_data_to_file, write_new_data_to_file, read_file_and_convert_to_list
-from tabulate import tabulate
-
-from utils.helpers import print_errors_message, print_infomation_message, print_list_in_table, print_sucessfuly_message
+from utils.file_operation import update_data_to_file, read_file_and_convert_to_list
+from utils.helpers import print_errors_message, print_information_message, print_list_in_table, print_successful_message
 
 
 def view_all_students():
@@ -24,7 +22,7 @@ def remove_student_by_id(student_id: str):
 
         update_data_to_file("student.data", newStudentList)
 
-        print_sucessfuly_message(
+        print_successful_message(
             f"Student {student_id} have been removed from the system.")
         return True
     else:
@@ -68,28 +66,38 @@ def get_students_by_grade():
     headers = ["Student Id", "Student Name",
                "Subject Name", "Mark", 'Grade']
 
+    print("Z GRADE: \n")
     if (len(z_mark_student) > 0):
-        print("Z GRADE: \n")
         print_list_in_table(z_mark_student, headers)
+    else:
+        print_information_message("  NOTHING TO SHOW \n")
 
+    print("P GRADE: \n")
     if (len(p_mark_student) > 0):
-        print("P GRADE: \n")
         print_list_in_table(p_mark_student, headers)
+    else:
+        print_information_message("  NOTHING TO SHOW \n")
 
+    print("C GRADE: \n")
     if (len(c_mark_student) > 0):
-        print("C GRADE: \n")
         print_list_in_table(c_mark_student, headers)
+    else:
+        print_information_message("  NOTHING TO SHOW \n")
 
+    print("D GRADE: \n")
     if (len(d_mark_student) > 0):
-        print("D GRADE: \n")
         print_list_in_table(d_mark_student, headers)
+    else:
+        print_information_message("  NOTHING TO SHOW \n")
 
+    print("HD GRADE: \n")
     if (len(hd_mark_student) > 0):
-        print("HD GRADE: \n")
         print_list_in_table(hd_mark_student, headers)
+    else:
+        print_information_message("  NOTHING TO SHOW \n")
 
 
-def catergorise_student():
+def categorise_student():
     studentList = read_file_and_convert_to_list('student.data')
 
     student_enrolled = [
@@ -116,14 +124,14 @@ def catergorise_student():
     headers = ["Student Id", "Student Name",
                "Subject Name", "Mark", 'Grade']
 
-    print_sucessfuly_message("PASS STUDENT: \n")
+    print_successful_message("PASS STUDENT: \n")
     if (len(pass_students) > 0):
         print_list_in_table(pass_students, headers)
     else:
-        print_infomation_message("  NOTHING TO SHOW \n")
+        print_information_message("  NOTHING TO SHOW \n")
 
     print_errors_message("FAIL STUDENT: \n")
     if (len(fail_students) > 0):
         print_list_in_table(fail_students, headers)
     else:
-        print_infomation_message("  NOTHING TO SHOW \n")
+        print_information_message("  NOTHING TO SHOW \n")
