@@ -21,7 +21,6 @@ def remove_student_by_id(student_id: str):
     if any(student['student_id'] == student_id for student in studentList):
         newStudentList = [
             student for student in studentList if not student['student_id'] == student_id]
-        print(*newStudentList)
 
         update_data_to_file("student.data", newStudentList)
 
