@@ -1,6 +1,7 @@
 import re
 import random
 import bcrypt
+from tabulate import tabulate
 from utils.file_operation import read_file_and_convert_to_list
 from colorama import Fore, Back, Style
 
@@ -73,3 +74,9 @@ def print_infomation_message(content):
 
 def print_option_message(content):
     print(f"{Fore.MAGENTA} {content}{Fore.RESET}")
+
+
+def print_list_in_table(list, headers):
+    rows = [element.values() for element in list]
+    print(tabulate(rows, headers, tablefmt="grid"))
+    print('\n')

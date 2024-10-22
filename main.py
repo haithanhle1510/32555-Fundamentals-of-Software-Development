@@ -1,5 +1,5 @@
-from authentication import process_student_register, process_student_login
-from admin_function import remove_student_by_id, view_all_students
+from authentication_controller import process_student_register, process_student_login
+from admin_controller import catergorise_student, get_students_by_grade, remove_student_by_id, view_all_students
 from utils.helpers import print_errors_message, print_sucessfuly_message, get_warning_message, print_infomation_message, print_option_message
 from utils.file_operation import clear_file
 from classes.User import Student
@@ -84,8 +84,10 @@ def admin_system():
             view_all_students()
         elif choice == '3':
             print_infomation_message("Get students by grade...")
+            get_students_by_grade()
         elif choice == '4':
             print_infomation_message("Catergories students by PASS/FAIL...")
+            catergorise_student()
         elif choice == '5':
             print_infomation_message("Remove students by id...")
             print_infomation_message("STUDENTS LISTS")
