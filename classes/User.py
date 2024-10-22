@@ -8,18 +8,12 @@ class User:
         self.email = email
         self.password = password
 
-    def login(self, email: str, password: str):
-        if self.email == email and self.password == password:
-            return True
-        else:
-            return False
-
 
 class Student(User):
-    def __init__(self, email: str, password: str,  name: str, student_id) -> None:
+    def __init__(self, email: str, password: str,  name: str, student_id: str, enrollment_list=[]) -> None:
         super().__init__(name, email, password)
         self.student_id: str = student_id
-        self.enrollment_list: List[str] = []
+        self.enrollment_list = enrollment_list
 
     def change_password(self, new_password: str) -> str:
         # Password change logic here
@@ -34,12 +28,13 @@ class Student(User):
     def view_enrollment_list(self) -> List[str]:
         return self.enrollment_list
 
-    def read_student_informations(self):
+    def read_student_information(self):
         return {
             'name': self.name,
             'email': self.email,
             'student_id': self.student_id,
-            'password': self.password
+            'password': self.password,
+            'enrollment_list': self.enrollment_list
         }
 
 
