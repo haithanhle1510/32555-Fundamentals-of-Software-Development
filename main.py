@@ -108,9 +108,9 @@ def student_system_menu(student: Student):
         print_option_message("  5) Exit")
 
         choice = input("Enter your choice: ")
+        student_id = student.read_student_informations()['student_id']
 
         if choice == '1':
-            student_id = student.read_student_informations()['student_id'] 
             modify_password(student_id)
             print_infomation_message("Change password...")
         elif choice == '2':
