@@ -92,13 +92,20 @@ def admin_system():
             view_all_students()
             while True:
                 student_id = input("Enter student id to remove: ")
-                remove_successful = remove_student_by_id(student_id)
-                if remove_successful:
-                    break
-                else:
-                    retry = input("Do you want to try again?(Y/N):")
-                    if retry == "N":
+                choice = input(get_warning_message(
+                    "Are you sure to remove this student?(Y/N):"))
+                if choice == 'Y':
+                    remove_successful = remove_student_by_id(student_id)
+                    if remove_successful:
                         break
+                    else:
+                        retry = input("Do you want to try again?(Y/N):")
+                        if retry == "N":
+                            break
+                else:
+                    print_infomation_message("Back to menu")
+                    break
+
         elif choice == '6':
             print_infomation_message("Returning to main menu...")
             break
