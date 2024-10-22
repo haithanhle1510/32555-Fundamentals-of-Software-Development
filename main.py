@@ -1,5 +1,5 @@
 from authentication import process_student_register, process_student_login
-from admin_function import view_all_students
+from admin_function import remove_student_by_id, view_all_students
 from utils.helpers import print_errors_message, print_sucessfuly_message, get_warning_message, print_infomation_message, print_option_message
 from utils.file_operation import clear_file
 from classes.User import Student
@@ -88,6 +88,17 @@ def admin_system():
             print_infomation_message("Catergories students by PASS/FAIL...")
         elif choice == '5':
             print_infomation_message("Remove students by id...")
+            print_infomation_message("STUDENTS LISTS")
+            view_all_students()
+            while True:
+                student_id = input("Enter student id to remove: ")
+                remove_successful = remove_student_by_id(student_id)
+                if remove_successful:
+                    break
+                else:
+                    retry = input("Do you want to try again?(Y/N):")
+                    if retry == "N":
+                        break
         elif choice == '6':
             print_infomation_message("Returning to main menu...")
             break

@@ -31,6 +31,12 @@ def write_new_data_to_file(file_path, content):
         json.dump(data, file, indent=4)
 
 
+def update_data_to_file(file_path, content):
+    # Write the updated data back to the file
+    with open(file_path, 'w') as file:
+        json.dump(content, file, indent=4)
+
+
 def clear_file(file_path):
     try:
         with open(file_path, 'w') as file:
