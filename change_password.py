@@ -23,13 +23,16 @@ def modify_password(student_id):
             "Please enter a new password (requirements: start with a capital letter, at least 5 letters, followed by 3 or more numbers): ")
 
         # Check if the user wants to log out
-        if new_password.lower() == 'exit':
-            print_infomation_message("Exit password modification.")
-            return
-
+        
         if is_valid_password(new_password):
             update_password(student_id, new_password)
             break
         else:
             print_errors_message("Invalid password, please try again.")
-            return
+            retry = input("Would you like to try again? (Y/N): ").strip().upper()
+            if retry == 'N':
+                print_infomation_message("Exiting password modification.")
+                return  # 退出密码修改
+            elif retry != 'Y':
+                print_errors_message("Invalid input. Exiting password modification.")
+                return  # 处理无效输入，直接退出
