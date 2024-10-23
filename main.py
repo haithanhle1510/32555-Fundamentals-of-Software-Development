@@ -2,8 +2,8 @@ from authentication_controller import process_student_register, process_student_
 from admin_controller import categorise_student, get_students_by_grade, remove_student_by_id, view_all_students
 from student_controller import display_enrollment_list, modify_password, enrol_subjects, delete_subject
 from utils.helpers import print_errors_message, print_successful_message, get_warning_message, print_information_message, print_option_message
-from utils.file_operation import clear_file
 from classes.User import Student
+from classes.Database import Database
 
 
 def main():
@@ -41,7 +41,7 @@ def student_system():
 
         if choice == '1':
             login_result = process_student_login()
-            is_user_authed = login_result['is_login_sucessfully']
+            is_user_authed = login_result['is_login_successfully']
             student_info = login_result['student']
 
         elif choice == '2':
@@ -57,12 +57,18 @@ def student_system():
 
         if is_user_authed == True:
             student = Student(
-                student_info['name'], student_info['email'], student_info['password'], student_info['student_id'])
+                student_info['name'],
+                student_info['email'],
+                student_info['password'],
+                student_info['student_id'],
+                student_info['enrollment_list']
+            )
             student_system_menu(student)
 
 
 def admin_system():
     while True:
+        database = Database()
         print_information_message("ADMIN SYSTEM")
         print_option_message("  1) Clear database")
         print_option_message("  2) View all students")
@@ -77,7 +83,7 @@ def admin_system():
             choice = input(get_warning_message(
                 "Are you sure to clear system's data?(Y/N):"))
             if choice == 'Y':
-                clear_file('student.data')
+                database.clear_file('student.data')
                 print_successful_message("System's data has been cleared.")
         elif choice == '2':
             print_information_message("View all students...")

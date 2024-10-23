@@ -1,9 +1,10 @@
-from utils.file_operation import update_data_to_file, read_file_and_convert_to_list
+from classes.Database import Database
 from utils.helpers import print_errors_message, print_information_message, print_list_in_table, print_successful_message
 
 
 def view_all_students():
-    studentList = read_file_and_convert_to_list('student.data')
+    database = Database()
+    studentList = database.read_file_and_convert_to_list('student.data')
 
     student_data = [{'student_id': student['student_id'], 'name': student['name'], 'email': student['email']}
                     for student in studentList]
@@ -14,13 +15,14 @@ def view_all_students():
 
 
 def remove_student_by_id(student_id: str):
-    studentList = read_file_and_convert_to_list('student.data')
+    database = Database()
+    studentList = database.read_file_and_convert_to_list('student.data')
 
     if any(student['student_id'] == student_id for student in studentList):
         newStudentList = [
             student for student in studentList if not student['student_id'] == student_id]
 
-        update_data_to_file("student.data", newStudentList)
+        database.update_data_to_file("student.data", newStudentList)
 
         print_successful_message(
             f"Student {student_id} have been removed from the system.")
@@ -31,7 +33,8 @@ def remove_student_by_id(student_id: str):
 
 
 def get_students_by_grade():
-    studentList = read_file_and_convert_to_list('student.data')
+    database = Database()
+    studentList = database.read_file_and_convert_to_list('student.data')
 
     student_enrolled = [
         student for student in studentList if len(student['enrollment_list']) > 0]
@@ -98,7 +101,8 @@ def get_students_by_grade():
 
 
 def categorise_student():
-    studentList = read_file_and_convert_to_list('student.data')
+    database = Database()
+    studentList = database.read_file_and_convert_to_list('student.data')
 
     student_enrolled = [
         student for student in studentList if len(student['enrollment_list']) > 0
@@ -124,13 +128,13 @@ def categorise_student():
     headers = ["Student Id", "Student Name",
                "Subject Name", "Mark", 'Grade']
 
-    print_successful_message("PASS STUDENT: \n")
+    print_successful_message("PASS STUDENT:")
     if (len(pass_students) > 0):
         print_list_in_table(pass_students, headers)
     else:
         print_information_message("  NOTHING TO SHOW \n")
 
-    print_errors_message("FAIL STUDENT: \n")
+    print_errors_message("FAIL STUDENT:")
     if (len(fail_students) > 0):
         print_list_in_table(fail_students, headers)
     else:

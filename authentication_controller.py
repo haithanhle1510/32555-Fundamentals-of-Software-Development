@@ -1,5 +1,5 @@
+from classes.Database import Database
 from utils.helpers import validate_email, validate_password, generate_hash_password, is_valid_password, print_errors_message, print_successful_message, print_information_message, generate_new_student_id
-from utils.file_operation import write_new_data_to_file, read_file_and_convert_to_list
 from classes.User import Student
 
 
@@ -41,14 +41,17 @@ def process_student_register():
 
 
 def post_student_register(email, password, name):
+    database = Database()
     student = Student(email, generate_hash_password(
         password), name, generate_new_student_id())
-    write_new_data_to_file('student.data', student.read_student_information())
+    database.write_new_data_to_file(
+        'student.data', student.read_student_information())
     return student.read_student_information()
 
 
 def is_email_existed(email):
-    studentList = read_file_and_convert_to_list('student.data')
+    database = Database()
+    studentList = database.read_file_and_convert_to_list('student.data')
     for student in studentList:
         if student['email'] == email:
             return True  # Account already exists
@@ -81,13 +84,14 @@ def process_student_login():
                 break
 
     return {
-        'is_login_sucessfully': validated_result['account_valid'],
+        'is_login_successfully': validated_result['account_valid'],
         'student': validated_result['student'],
     }
 
 
 def validate_student_account(email, password):
-    studentList = read_file_and_convert_to_list('student.data')
+    database = Database()
+    studentList = database.read_file_and_convert_to_list('student.data')
     studentFound = False
     for student in studentList:
         if student['email'] == email and validate_password(password, student['password']):

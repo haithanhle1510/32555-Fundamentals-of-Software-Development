@@ -2,7 +2,7 @@ import re
 import random
 import bcrypt
 from tabulate import tabulate
-from utils.file_operation import read_file_and_convert_to_list
+from classes.Database import Database
 from colorama import Fore
 
 
@@ -34,8 +34,9 @@ def is_valid_password(password):
 
 
 def generate_new_student_id() -> str:
+    database = Database()
     existing_ids = list(
-        map(lambda student: student['student_id'], read_file_and_convert_to_list('student.data')))
+        map(lambda student: student['student_id'], database.read_file_and_convert_to_list('student.data')))
     while True:
         student_id = random.randint(1, 999999)
         # Convert to six digits with leading zeros if necessary

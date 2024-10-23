@@ -1,18 +1,20 @@
+from classes.Database import Database
 from utils.helpers import print_errors_message, print_information_message, print_list_in_table
 from utils.helpers import is_valid_password, print_errors_message, generate_hash_password, print_information_message, print_successful_message
 import random
-from utils.file_operation import read_file_and_convert_to_list, update_data_to_file
+from classes.Subject import Subject
 
 
 def update_password(student_id, new_password):
-    studentList = read_file_and_convert_to_list('student.data')
+    database = Database()
+    studentList = database.read_file_and_convert_to_list('student.data')
     # Update password directly in dictionary
     for idx in range(len(studentList)):
         if studentList[idx]['student_id'] == student_id:
             studentList[idx]['password'] = generate_hash_password(new_password)
 
     # Write the new data to the file
-    update_data_to_file('student.data', studentList)
+    database.update_data_to_file('student.data', studentList)
     print_successful_message(f"Your password has been updated.")
 
 
@@ -37,18 +39,6 @@ def modify_password(student_id):
                 return
 
 
-# Use a collection to store existing course IDs
-existing_ids = set()
-
-# Randomly generate course ID
-def generate_subject_id():
-    while True:
-        subject_id = str(random.randint(1, 999)).zfill(
-            3)  # Convert to string and fill with 3 digits
-        if subject_id not in existing_ids:
-            existing_ids.add(subject_id)  # Add a new ID to the collection
-            return subject_id
-
 # Generate ratings based on scores
 def get_grade(score):
     if score < 50:
@@ -66,17 +56,18 @@ def get_grade(score):
 
 
 def enrol_subjects(student_id):
+    database = Database()
     max_courses = 4
-    studentList = read_file_and_convert_to_list('student.data')
-    available_courses = [
-        {"subject_name": "Math", "subject_id": generate_subject_id()},
-        {"subject_name": "Science", "subject_id": generate_subject_id()},
-        {"subject_name": "History", "subject_id": generate_subject_id()},
-        {"subject_name": "Art", "subject_id": generate_subject_id()},
-        {"subject_name": "Physics", "subject_id": generate_subject_id()},
-        {"subject_name": "Chemistry", "subject_id": generate_subject_id()},
-        {"subject_name": "English", "subject_id": generate_subject_id()},
-        {"subject_name": "Programming", "subject_id": generate_subject_id()}
+    studentList = database.read_file_and_convert_to_list('student.data')
+    available_subject = [
+        Subject("001", "Math"),
+        Subject("002", "Science"),
+        Subject("003", "History"),
+        Subject("004", "Art"),
+        Subject("005", "Physics"),
+        Subject("006", "Chemistry"),
+        Subject("007", "English"),
+        Subject("008", "Programming"),
     ]
 
     for idx in range(len(studentList)):
@@ -93,26 +84,27 @@ def enrol_subjects(student_id):
         return
 
     while len(existing_enrollment_list) < max_courses:
-        select_course = random.choice(available_courses)
+        select_subject = random.choice(available_subject).read_subject_detail()
 
-        if not any(course['subject_id'] == select_course['subject_id'] for course in existing_enrollment_list):
+        if not any(subject['subject_id'] == select_subject['subject_id'] for subject in existing_enrollment_list):
             mark = random.randint(25, 100)  # Randomly generate scores
             grade = get_grade(mark)  # Get ratings based on scores
             existing_enrollment_list.append({
-                "subject_id": select_course["subject_id"],
-                "subject_name": select_course["subject_name"],
+                "subject_id": select_subject["subject_id"],
+                "subject_name": select_subject["subject_name"],
                 "mark": mark,
                 "grade": grade
             })
-            print(f"Registered course {select_course['subject_name']} ({
-                  select_course['subject_id']}) with mark {mark} and grade {grade}.")
+            print(f"Registered course {select_subject['subject_name']} ({
+                  select_subject['subject_id']}) with mark {mark} and grade {grade}.")
 
     # Update the new data to the file
-    update_data_to_file('student.data', studentList)
+    database.update_data_to_file('student.data', studentList)
 
 
 def display_enrollment_list(student_id):
-    studentList = read_file_and_convert_to_list('student.data')
+    database = Database()
+    studentList = database.read_file_and_convert_to_list('student.data')
 
     for idx in range(len(studentList)):
         if studentList[idx]['student_id'] == student_id:
@@ -133,7 +125,8 @@ def display_enrollment_list(student_id):
 
 # Delete enrollment feature
 def delete_subject(student_id):
-    studentList = read_file_and_convert_to_list('student.data')
+    database = Database()
+    studentList = database.read_file_and_convert_to_list('student.data')
     for idx in range(len(studentList)):
         if studentList[idx]['student_id'] == student_id:
             if 'enrollment_list' not in studentList[idx]:
@@ -163,9 +156,10 @@ def delete_subject(student_id):
         if enrollment_record['subject_id'] == subject_id:
             existing_enrollment_list.remove(enrollment_record)
             enrollment_record_found = True
-            print(
+            print_successful_message(
                 f"Subject {subject_id}-{enrollment_record['subject_name']} deleted successfully from enrollment list.")
-            update_data_to_file('student.data', studentList)  # Update data
+            database.update_data_to_file(
+                'student.data', studentList)  # Update data
             break  # Exit the loop after deletion
 
     if not enrollment_record_found:
