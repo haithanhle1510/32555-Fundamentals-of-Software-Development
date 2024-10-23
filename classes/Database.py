@@ -34,9 +34,24 @@ class Database:
             json.dump(data, file, indent=4)
 
     def update_data_to_file(self, file_path, content):
+        data = self.read_file_and_convert_to_list(file_path)
+        for student in data:
+            if student['student_id'] == content['student_id']:
+                student.update(content)
+                break
+
         # Write the updated data back to the file
         with open(file_path, 'w') as file:
-            json.dump(content, file, indent=4)
+            json.dump(data, file, indent=4)
+
+    def remove_data_from_file(self, file_path, id):
+        data = self.read_file_and_convert_to_list(file_path)
+        new_data = [
+            record for record in data if not record['student_id'] == id]
+
+        # Write the updated data back to the file
+        with open(file_path, 'w') as file:
+            json.dump(new_data, file, indent=4)
 
     def clear_file(self, file_path):
         try:

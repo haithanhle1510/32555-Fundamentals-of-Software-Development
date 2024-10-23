@@ -19,10 +19,7 @@ def remove_student_by_id(student_id: str):
     studentList = database.read_file_and_convert_to_list('student.data')
 
     if any(student['student_id'] == student_id for student in studentList):
-        newStudentList = [
-            student for student in studentList if not student['student_id'] == student_id]
-
-        database.update_data_to_file("student.data", newStudentList)
+        database.remove_data_from_file('student.data', student_id)
 
         print_successful_message(
             f"Student {student_id} have been removed from the system.")
