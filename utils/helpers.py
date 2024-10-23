@@ -1,8 +1,9 @@
 import re
 import random
 import bcrypt
+from tabulate import tabulate
 from utils.file_operation import read_file_and_convert_to_list
-from colorama import Fore, Back, Style
+from colorama import Fore
 
 
 def validate_email(email: str) -> bool:
@@ -56,20 +57,26 @@ def validate_password(password: str, hashPassword: str) -> bool:
 
 
 def print_errors_message(content):
-    print(f"{Fore.RED} {content}{Fore.RESET}")
+    print(f"{Fore.RED} {content}{Fore.RESET} \n")
 
 
-def print_sucessfuly_message(content):
-    print(f"{Fore.GREEN} {content}{Fore.RESET}")
+def print_successful_message(content):
+    print(f"{Fore.GREEN} {content}{Fore.RESET} \n")
 
 
 def get_warning_message(content):
-    return (f"{Fore.YELLOW} {content}{Fore.RESET}")
+    return (f"{Fore.YELLOW} {content}{Fore.RESET} \n")
 
 
-def print_infomation_message(content):
+def print_information_message(content):
     print(f"{Fore.BLUE} {content}{Fore.RESET}")
 
 
 def print_option_message(content):
     print(f"{Fore.MAGENTA} {content}{Fore.RESET}")
+
+
+def print_list_in_table(list, headers):
+    rows = [element.values() for element in list]
+    print(tabulate(rows, headers, tablefmt="grid"))
+    print('\n')

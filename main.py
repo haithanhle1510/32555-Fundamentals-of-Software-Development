@@ -1,13 +1,14 @@
-from authentication import process_student_register, process_student_login
-from admin_function import remove_student_by_id, view_all_students
-from utils.helpers import print_errors_message, print_sucessfuly_message, get_warning_message, print_infomation_message, print_option_message
+from authentication_controller import process_student_register, process_student_login
+from admin_controller import categorise_student, get_students_by_grade, remove_student_by_id, view_all_students
+from student_controller import display_enrollment_list, modify_password, enrol_subjects, delete_subject
+from utils.helpers import print_errors_message, print_successful_message, get_warning_message, print_information_message, print_option_message
 from utils.file_operation import clear_file
 from classes.User import Student
 
 
 def main():
     while True:
-        print_infomation_message("Please choose an option:")
+        print_information_message("Please choose an option:")
         print_option_message("  1) Go to student system")
         print_option_message("  2) Go to admin system")
         print_option_message("  3) Exit")
@@ -15,13 +16,13 @@ def main():
         choice = input("Enter your choice: ")
 
         if choice == '1':
-            print_infomation_message("Navigating to student system...")
+            print_information_message("Navigating to student system...")
             student_system()
         elif choice == '2':
-            print_infomation_message("Navigating to admin system...")
+            print_information_message("Navigating to admin system...")
             admin_system()
         elif choice == '3':
-            print_infomation_message("Exiting the system. Goodbye!")
+            print_information_message("Exiting the system. Goodbye!")
             break
         else:
             print_errors_message("Invalid choice. Please try again.")
@@ -29,7 +30,7 @@ def main():
 
 def student_system():
     while True:
-        print_infomation_message("STUDENT SYSTEM")
+        print_information_message("STUDENT SYSTEM")
         print_option_message("  1) Log in")
         print_option_message("  2) Register")
         print_option_message("  3) Back to main menu")
@@ -42,15 +43,14 @@ def student_system():
             login_result = process_student_login()
             is_user_authed = login_result['is_login_sucessfully']
             student_info = login_result['student']
-            print(student_info)
 
         elif choice == '2':
             register_result = process_student_register()
-            is_user_authed = register_result['is_registered_sucessfully']
+            is_user_authed = register_result['is_registered_successfully']
             student_info = register_result['student']
 
         elif choice == '3':
-            print_infomation_message("Returning to main menu...")
+            print_information_message("Returning to main menu...")
             break
         else:
             print_errors_message("Invalid choice. Please try again.")
@@ -63,11 +63,11 @@ def student_system():
 
 def admin_system():
     while True:
-        print_infomation_message("ADMIN SYSTEM")
+        print_information_message("ADMIN SYSTEM")
         print_option_message("  1) Clear database")
         print_option_message("  2) View all students")
         print_option_message("  3) Get students by grade")
-        print_option_message("  4) Catergories students by PASS/FAIL")
+        print_option_message("  4) Categories students by PASS/FAIL")
         print_option_message("  5) Remove students by id")
         print_option_message("  6) Back to main menu")
 
@@ -78,17 +78,19 @@ def admin_system():
                 "Are you sure to clear system's data?(Y/N):"))
             if choice == 'Y':
                 clear_file('student.data')
-                print_sucessfuly_message("System's data has been cleared.")
+                print_successful_message("System's data has been cleared.")
         elif choice == '2':
-            print_infomation_message("View all students...")
+            print_information_message("View all students...")
             view_all_students()
         elif choice == '3':
-            print_infomation_message("Get students by grade...")
+            print_information_message("Get students by grade...")
+            get_students_by_grade()
         elif choice == '4':
-            print_infomation_message("Catergories students by PASS/FAIL...")
+            print_information_message("Categories students by PASS/FAIL...")
+            categorise_student()
         elif choice == '5':
-            print_infomation_message("Remove students by id...")
-            print_infomation_message("STUDENTS LISTS")
+            print_information_message("Remove students by id...")
+            print_information_message("STUDENTS LISTS")
             view_all_students()
             while True:
                 student_id = input("Enter student id to remove: ")
@@ -103,11 +105,11 @@ def admin_system():
                         if retry == "N":
                             break
                 else:
-                    print_infomation_message("Back to menu")
+                    print_information_message("Back to menu")
                     break
 
         elif choice == '6':
-            print_infomation_message("Returning to main menu...")
+            print_information_message("Returning to main menu...")
             break
         else:
             print_errors_message("Invalid choice. Please try again.")
@@ -115,7 +117,7 @@ def admin_system():
 
 def student_system_menu(student: Student):
     while True:
-        print_infomation_message("STUDENT SYSTEM MENU")
+        print_information_message("STUDENT SYSTEM MENU")
         print_option_message("  1) Change password")
         print_option_message("  2) Enrol in subject")
         print_option_message("  3) Remove a subject")
@@ -123,17 +125,22 @@ def student_system_menu(student: Student):
         print_option_message("  5) Exit")
 
         choice = input("Enter your choice: ")
+        student_id = student.read_student_information()['student_id']
 
         if choice == '1':
-            print_infomation_message("Change password...")
+            print_information_message("Change password...")
+            modify_password(student_id)
         elif choice == '2':
-            print_infomation_message("Enrol in subject...")
+            print_information_message("Enrol in subject...")
+            enrol_subjects(student_id)
         elif choice == '3':
-            print_infomation_message("Remove a subject...")
+            print_information_message("Remove a subject...")
+            delete_subject(student_id)
         elif choice == '4':
-            print_infomation_message("Show enrolled subject...")
+            print_information_message("Show enrolled subject...")
+            display_enrollment_list(student_id)
         elif choice == '5':
-            print_infomation_message("Exitting...")
+            print_information_message("Exiting...")
             break
         else:
             print_errors_message("Invalid choice. Please try again.")
