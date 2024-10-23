@@ -57,15 +57,15 @@ def validate_password(password: str, hashPassword: str) -> bool:
 
 
 def print_errors_message(content):
-    print(f"{Fore.RED} {content}{Fore.RESET}")
+    print(f"{Fore.RED} {content}{Fore.RESET} \n")
 
 
 def print_successful_message(content):
-    print(f"{Fore.GREEN} {content}{Fore.RESET}")
+    print(f"{Fore.GREEN} {content}{Fore.RESET} \n")
 
 
 def get_warning_message(content):
-    return (f"{Fore.YELLOW} {content}{Fore.RESET}")
+    return (f"{Fore.YELLOW} {content}{Fore.RESET} \n")
 
 
 def print_information_message(content):
