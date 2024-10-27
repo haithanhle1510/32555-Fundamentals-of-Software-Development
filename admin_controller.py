@@ -47,6 +47,7 @@ def get_students_by_grade():
             student_record_with_enrollment_details = {
                 'student_id': student['student_id'],
                 'student_name': student['name'],
+                'student_email': student['email'],
                 'subject_name': enrollment_record['subject_name'],
                 'mark': enrollment_record['mark'],
                 'grade': enrollment_record['grade'],
@@ -63,7 +64,7 @@ def get_students_by_grade():
             elif enrollment_record['grade'] == 'HD':
                 hd_mark_student.append(student_record_with_enrollment_details)
 
-    headers = ["Student Id", "Student Name",
+    headers = ["Student Id", "Student Name", "Student Email",
                "Subject Name", "Mark", 'Grade']
 
     print("Z GRADE: \n")
@@ -112,6 +113,7 @@ def categorise_student():
             student_record_with_enrollment_details = {
                 'student_id': student['student_id'],
                 'student_name': student['name'],
+                'student_email': student['email'],
                 'subject_name': enrollment_record['subject_name'],
                 'mark': enrollment_record['mark'],
                 'grade': enrollment_record['grade'],
@@ -122,7 +124,7 @@ def categorise_student():
             else:
                 fail_students.append(student_record_with_enrollment_details)
 
-    headers = ["Student Id", "Student Name",
+    headers = ["Student Id", "Student Name", "Student Email",
                "Subject Name", "Mark", 'Grade']
 
     print_successful_message("PASS STUDENT:")

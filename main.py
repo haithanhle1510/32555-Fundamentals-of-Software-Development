@@ -123,6 +123,9 @@ def admin_system():
 def student_system_menu(student: Student):
     while True:
         print_information_message("STUDENT SYSTEM MENU")
+        print_information_message(
+            f"Welcome {student.name}. Please choose your option")
+
         print_option_message("  1) Change password")
         print_option_message("  2) Enrol in subject")
         print_option_message("  3) Remove a subject")
