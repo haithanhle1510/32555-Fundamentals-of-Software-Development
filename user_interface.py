@@ -345,6 +345,9 @@ def view_enrollment_list(student: Student):
     if len(student.enrollment_list) == 0:
         tk.Label(screen, text="You have not registered for any courses", padx=20,
                  pady=20, font='Helvetica 16 bold').grid()
+        button = tk.Button(screen, text="Back to Student System", bg='red', fg='white',
+                       font='Helvetica 14', command=lambda: show_student_main_system(student), height=2)
+        button.grid(column=2, columnspan=2, pady=(20, 20))
         return
 
     tk.Label(screen, text="ENROLLED SUBJECT:", padx=20,
@@ -445,8 +448,23 @@ def view_all_students():
 def get_students_by_grade():
     database = Database()
     clear_window(root)
-    screen = tk.Frame(root)
-    screen.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    # 创建Canvas和Scrollbar
+    screen_canvas = tk.Canvas(root)
+    screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # 将Frame放置在Canvas中
+    screen = tk.Frame(screen_canvas)
+    screen_canvas.create_window((0, 0), window=screen, anchor="nw")
+    screen_canvas.configure(yscrollcommand=scrollbar.set)
+    
+    # 更新Canvas的scrollregion
+    def configure_canvas(event):
+        screen_canvas.configure(scrollregion=screen_canvas.bbox("all"))
+    screen.bind("<Configure>", configure_canvas)
+    
     row_existing = 0
 
     studentList = database.read_file_and_convert_to_list('student.data')
@@ -551,8 +569,23 @@ def get_students_by_grade():
 def categorize_students():
     database = Database()
     clear_window(root)
-    screen = tk.Frame(root)
-    screen.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+   # 创建Canvas和Scrollbar
+    screen_canvas = tk.Canvas(root)
+    screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # 将Frame放置在Canvas中
+    screen = tk.Frame(screen_canvas)
+    screen_canvas.create_window((0, 0), window=screen, anchor="nw")
+    screen_canvas.configure(yscrollcommand=scrollbar.set)
+    
+    # 更新Canvas的scrollregion
+    def configure_canvas(event):
+        screen_canvas.configure(scrollregion=screen_canvas.bbox("all"))
+    screen.bind("<Configure>", configure_canvas)
+    
     row_existing = 0
 
     studentList = database.read_file_and_convert_to_list('student.data')
