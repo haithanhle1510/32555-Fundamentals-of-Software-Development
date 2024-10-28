@@ -448,19 +448,19 @@ def view_all_students():
 def get_students_by_grade():
     database = Database()
     clear_window(root)
-    # 创建Canvas和Scrollbar
+    # Creating Canvas and Scrollbar
     screen_canvas = tk.Canvas(root)
     screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
     scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-    # 将Frame放置在Canvas中
+    # Place the Frame in the Canvas
     screen = tk.Frame(screen_canvas)
     screen_canvas.create_window((0, 0), window=screen, anchor="nw")
     screen_canvas.configure(yscrollcommand=scrollbar.set)
     
-    # 更新Canvas的scrollregion
+    # Update the scrollregion of the Canvas
     def configure_canvas(event):
         screen_canvas.configure(scrollregion=screen_canvas.bbox("all"))
     screen.bind("<Configure>", configure_canvas)
@@ -569,19 +569,19 @@ def get_students_by_grade():
 def categorize_students():
     database = Database()
     clear_window(root)
-   # 创建Canvas和Scrollbar
+   # Creating Canvas and Scrollbar
     screen_canvas = tk.Canvas(root)
     screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
     scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-    # 将Frame放置在Canvas中
+    # Place the Frame in the Canvas
     screen = tk.Frame(screen_canvas)
     screen_canvas.create_window((0, 0), window=screen, anchor="nw")
     screen_canvas.configure(yscrollcommand=scrollbar.set)
     
-    # 更新Canvas的scrollregion
+    # Update the scrollregion of the Canvas
     def configure_canvas(event):
         screen_canvas.configure(scrollregion=screen_canvas.bbox("all"))
     screen.bind("<Configure>", configure_canvas)
