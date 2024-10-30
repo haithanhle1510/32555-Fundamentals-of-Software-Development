@@ -345,6 +345,9 @@ def view_enrollment_list(student: Student):
     if len(student.enrollment_list) == 0:
         tk.Label(screen, text="You have not registered for any courses", padx=20,
                  pady=20, font='Helvetica 16 bold').grid()
+        button = tk.Button(screen, text="Back to Student System", bg='red', fg='white',
+                       font='Helvetica 14', command=lambda: show_student_main_system(student), height=2)
+        button.grid(column=2, columnspan=2, pady=(20, 20))
         return
 
     tk.Label(screen, text="ENROLLED SUBJECT:", padx=20,
@@ -445,8 +448,25 @@ def view_all_students():
 def get_students_by_grade():
     database = Database()
     clear_window(root)
-    screen = tk.Frame(root)
-    screen.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    # Creating Canvas and Scrollbar
+    screen_canvas = tk.Canvas(root, width=1100, height=700)
+    screen_canvas.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    # screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    
+    
+    scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # Place the Frame in the Canvas
+    screen = tk.Frame(screen_canvas)
+    screen_canvas.create_window((0, 0), window=screen, anchor="n")
+    screen_canvas.configure(yscrollcommand=scrollbar.set)
+    
+    # Update the scrollregion of the Canvas
+    def configure_canvas(event):
+        screen_canvas.configure(scrollregion=screen_canvas.bbox("all"))
+    screen.bind("<Configure>", configure_canvas)
+    
     row_existing = 0
 
     studentList = database.read_file_and_convert_to_list('student.data')
@@ -551,62 +571,117 @@ def get_students_by_grade():
 def categorize_students():
     database = Database()
     clear_window(root)
-    screen = tk.Frame(root)
-    screen.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    # Creating Canvas and Scrollbar
+    screen_canvas = tk.Canvas(root, width=1200, height=600)
+    screen_canvas.place(relx=0.62, rely=0.5, anchor=tk.CENTER)
+    # screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    
+    
+    scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # Place the Frame in the Canvas
+    screen = tk.Frame(screen_canvas)
+    screen_canvas.create_window((0, 0), window=screen, anchor="n")
+    screen_canvas.configure(yscrollcommand=scrollbar.set)
+    
+    # Update the scrollregion of the Canvas
+    def configure_canvas(event):
+        screen_canvas.configure(scrollregion=screen_canvas.bbox("all"))
+    screen.bind("<Configure>", configure_canvas)
+
     row_existing = 0
 
     studentList = database.read_file_and_convert_to_list('student.data')
 
-    student_enrolled = [
-        student for student in studentList if len(student['enrollment_list']) > 0]
+    # Only select students who are registered for the course
+    student_enrolled = [student for student in studentList if len(student['enrollment_list']) > 0]
 
     fail_students = []
     pass_students = []
 
     for student in student_enrolled:
+        marks = []  
+        all_passed = True  # Assuming that the student passes all courses
+        failed_courses = []  
+        
+        # Check each course of the student
         for enrollment_record in student['enrollment_list']:
-            student_record_with_enrollment_details = [
-                student['student_id'], student['name'], student['email'], enrollment_record['subject_name'], enrollment_record['mark'], enrollment_record['grade']]
-            if enrollment_record['mark'] >= 50:
-                pass_students.append(student_record_with_enrollment_details)
+            mark = enrollment_record['mark']
+            marks.append(mark)
+            
+            # If any course score is below 50, set it to fail
+            if mark < 50:
+                all_passed = False
+                failed_courses.append([
+                    student['student_id'], 
+                    student['name'], 
+                    student['email'], 
+                    enrollment_record['subject_name'], 
+                    enrollment_record['mark'], 
+            ])
+        
+        # Calculate average score
+        average_mark = sum(marks) / len(marks)
+        def calculate_grade(score):
+            if score < 50:
+                return 'Z'
+            elif 50 <= score < 65:
+                return 'P'
+            elif 65 <= score < 75:
+                return 'C'
+            elif 75 <= score < 85:
+                return 'D'
             else:
-                fail_students.append(student_record_with_enrollment_details)
+                return 'HD'
+        
+        if all_passed:
+            
+            pass_students.append([
+                student['student_id'], 
+                student['name'], 
+                student['email'], 
+                average_mark, 
+                calculate_grade(average_mark)
+            ])
+        else:
+            # Record the failed course information
+            fail_students.extend(failed_courses)
+            
 
-    headers = [["Student Id", "Student Name",
-                "Student Email", "Subject Name", "Mark", 'Grade']]
-
+    headers_pass = [["Student Id", "Student Name", "Student Email", "Average Mark", "Overall Grade"]]
+    headers_fail = [["Student Id", "Student Name", "Student Email", "Subject Name", "Mark"]]
     tk.Label(screen, text="CATEGORIZE STUDENT", padx=20, pady=20,
-             font='Helvetica 16 bold').grid(row=row_existing, column=math.floor(len(headers[0])/2-1), columnspan=4, pady=(20, 20))
+             font='Helvetica 16 bold').grid(row=row_existing, column=math.floor(len(headers_pass[0])//2-1), columnspan=4, pady=(20, 20))
     row_existing += 1
 
     tk.Label(screen, text="PASS STUDENT:", pady=20,
              font='Helvetica 16 bold', fg='green').grid(row=row_existing, column=1, columnspan=2)
     row_existing += 1
 
-    if (len(pass_students) > 0):
-        table(screen, pass_students, headers, row_existing)
-        row_existing += len(pass_students + headers)
+    if pass_students:
+        table(screen, pass_students, headers_pass, row_existing)
+        row_existing += len(pass_students) + 1  
     else:
         tk.Label(screen, text="NOTHING TO SHOW", padx=20, pady=20,
-                 font='Helvetica 16 bold').grid(column=3)
+                 font='Helvetica 16 bold').grid(row=row_existing, column=1, columnspan=2)
         row_existing += 1
 
     tk.Label(screen, text="FAIL STUDENT:", padx=20, pady=20,
              font='Helvetica 16 bold', fg='red').grid(row=row_existing, column=1, columnspan=2)
     row_existing += 1
 
-    if (len(fail_students) > 0):
-        table(screen, fail_students, headers, row_existing)
-        row_existing += len(fail_students + headers)
+    if fail_students:
+        table(screen, fail_students, headers_fail, row_existing)
+        row_existing += len(fail_students) + 1  
     else:
         tk.Label(screen, text="NOTHING TO SHOW", padx=20, pady=20,
-                 font='Helvetica 16 bold').grid(column=3)
+                 font='Helvetica 16 bold').grid(row=row_existing, column=1, columnspan=2)
         row_existing += 1
 
     button = tk.Button(screen, text="Back to Admin System", bg='red', fg='white',
                        font='Helvetica 14', command=show_admin_menu, height=2)
-    button.grid(column=math.floor(
-        len(headers[0])/2), columnspan=2, pady=(20, 20))
+    button.grid(column=math.floor(len(headers_pass[0])//2), columnspan=2, pady=(20, 20))
 
 
 def remove_student_by_id():
