@@ -266,12 +266,12 @@ def show_change_password_screen(student: Student):
                                   font='Helvetica 15 bold', width=15, height=2, command=lambda: change_password_handler(newPasswordTxt.get(), confirmNewPasswordTxt.get(), student))
     changePasswordBtn.grid(column=1, row=2, padx=5, sticky=tk.W, pady=10)
 
-    # Cancel Button
-    cancelBtn = tk.Button(menu,
-                          bg='red', fg='white',
-                          font='Helvetica 15 bold',
-                          text="Back", height=2, command=show_student_authentication_menu)
-    cancelBtn.grid(column=1, row=2, sticky=tk.E, padx=5, pady=10)
+    # Back Button
+    backBtn = tk.Button(menu,
+                        bg='red', fg='white',
+                        font='Helvetica 15 bold',
+                        text="Back", height=2, command=show_student_main_system)
+    backBtn.grid(column=1, row=2, sticky=tk.E, padx=5, pady=10)
 
 
 def change_password_handler(new_password, confirm_new_password, student: Student):
@@ -346,7 +346,7 @@ def view_enrollment_list(student: Student):
         tk.Label(screen, text="You have not registered for any courses", padx=20,
                  pady=20, font='Helvetica 16 bold').grid()
         button = tk.Button(screen, text="Back to Student System", bg='red', fg='white',
-                       font='Helvetica 14', command=lambda: show_student_main_system(student), height=2)
+                           font='Helvetica 14', command=lambda: show_student_main_system(student), height=2)
         button.grid(column=2, columnspan=2, pady=(20, 20))
         return
 
@@ -452,21 +452,21 @@ def get_students_by_grade():
     screen_canvas = tk.Canvas(root, width=1100, height=700)
     screen_canvas.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
     # screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-    
-    
-    scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
+
+    scrollbar = tk.Scrollbar(root, orient="vertical",
+                             command=screen_canvas.yview)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     # Place the Frame in the Canvas
     screen = tk.Frame(screen_canvas)
     screen_canvas.create_window((0, 0), window=screen, anchor="n")
     screen_canvas.configure(yscrollcommand=scrollbar.set)
-    
+
     # Update the scrollregion of the Canvas
     def configure_canvas(event):
         screen_canvas.configure(scrollregion=screen_canvas.bbox("all"))
     screen.bind("<Configure>", configure_canvas)
-    
+
     row_existing = 0
 
     studentList = database.read_file_and_convert_to_list('student.data')
@@ -575,16 +575,16 @@ def categorize_students():
     screen_canvas = tk.Canvas(root, width=1200, height=600)
     screen_canvas.place(relx=0.61, rely=0.5, anchor=tk.CENTER)
     # screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-    
-    
-    scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
+
+    scrollbar = tk.Scrollbar(root, orient="vertical",
+                             command=screen_canvas.yview)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     # Place the Frame in the Canvas
     screen = tk.Frame(screen_canvas)
     screen_canvas.create_window((0, 0), window=screen, anchor="n")
     screen_canvas.configure(yscrollcommand=scrollbar.set)
-    
+
     # Update the scrollregion of the Canvas
     def configure_canvas(event):
         screen_canvas.configure(scrollregion=screen_canvas.bbox("all"))
@@ -595,7 +595,8 @@ def categorize_students():
     studentList = database.read_file_and_convert_to_list('student.data')
 
     # 只选择已注册课程的学生
-    student_enrolled = [student for student in studentList if len(student['enrollment_list']) > 0]
+    student_enrolled = [student for student in studentList if len(
+        student['enrollment_list']) > 0]
 
     fail_students = []
     pass_students = []
@@ -614,22 +615,23 @@ def categorize_students():
         # 根据平均分将学生记录分类
         if overall_grade == "Pass":
             pass_students.append([
-                student['student_id'], 
-                student['name'], 
-                student['email'], 
-                average_mark, 
+                student['student_id'],
+                student['name'],
+                student['email'],
+                average_mark,
                 overall_grade
             ])
         else:
             fail_students.append([
-                student['student_id'], 
-                student['name'], 
-                student['email'], 
-                average_mark, 
+                student['student_id'],
+                student['name'],
+                student['email'],
+                average_mark,
                 overall_grade
             ])
 
-    headers = [["Student Id", "Student Name", "Student Email", "Average Mark", "Overall Grade"]]
+    headers = [["Student Id", "Student Name",
+                "Student Email", "Average Mark", "Overall Grade"]]
 
     tk.Label(screen, text="CATEGORIZE STUDENT", padx=20, pady=20,
              font='Helvetica 16 bold').grid(row=row_existing, column=math.floor(len(headers[0])/2-1), columnspan=4, pady=(20, 20))
@@ -661,7 +663,8 @@ def categorize_students():
 
     button = tk.Button(screen, text="Back to Admin System", bg='red', fg='white',
                        font='Helvetica 14', command=show_admin_menu, height=2)
-    button.grid(column=math.floor(len(headers[0])//2), columnspan=2, pady=(20, 20))
+    button.grid(column=math.floor(
+        len(headers[0])//2), columnspan=2, pady=(20, 20))
 
 
 def remove_student_by_id():
