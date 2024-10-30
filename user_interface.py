@@ -459,7 +459,7 @@ def get_students_by_grade():
 
     # Place the Frame in the Canvas
     screen = tk.Frame(screen_canvas)
-    screen_canvas.create_window((0, 0), window=screen, anchor="nw")
+    screen_canvas.create_window((0, 0), window=screen, anchor="n")
     screen_canvas.configure(yscrollcommand=scrollbar.set)
     
     # Update the scrollregion of the Canvas
@@ -582,7 +582,7 @@ def categorize_students():
 
     # Place the Frame in the Canvas
     screen = tk.Frame(screen_canvas)
-    screen_canvas.create_window((10, 0), window=screen, anchor="n")
+    screen_canvas.create_window((0, 0), window=screen, anchor="n")
     screen_canvas.configure(yscrollcommand=scrollbar.set)
     
     # Update the scrollregion of the Canvas
