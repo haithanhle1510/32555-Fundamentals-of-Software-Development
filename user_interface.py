@@ -573,7 +573,7 @@ def categorize_students():
     clear_window(root)
     # Creating Canvas and Scrollbar
     screen_canvas = tk.Canvas(root, width=1200, height=600)
-    screen_canvas.place(relx=0.61, rely=0.5, anchor=tk.CENTER)
+    screen_canvas.place(relx=0.62, rely=0.5, anchor=tk.CENTER)
     # screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     
     
@@ -594,45 +594,65 @@ def categorize_students():
 
     studentList = database.read_file_and_convert_to_list('student.data')
 
-    # 只选择已注册课程的学生
+    # Only select students who are registered for the course
     student_enrolled = [student for student in studentList if len(student['enrollment_list']) > 0]
 
     fail_students = []
     pass_students = []
 
     for student in student_enrolled:
-        marks = []  # 用于存储每门课程的分数
-
+        marks = []  
+        all_passed = True  # Assuming that the student passes all courses
+        failed_courses = []  
+        
+        # Check each course of the student
         for enrollment_record in student['enrollment_list']:
-            # 将每门课程的分数添加到 marks 列表中
-            marks.append(enrollment_record['mark'])
-
-        # 计算平均分和等级
+            mark = enrollment_record['mark']
+            marks.append(mark)
+            
+            # If any course score is below 50, set it to fail
+            if mark < 50:
+                all_passed = False
+                failed_courses.append([
+                    student['student_id'], 
+                    student['name'], 
+                    student['email'], 
+                    enrollment_record['subject_name'], 
+                    enrollment_record['mark'], 
+            ])
+        
+        # Calculate average score
         average_mark = sum(marks) / len(marks)
-        overall_grade = "Pass" if average_mark >= 50 else "Fail"
-
-        # 根据平均分将学生记录分类
-        if overall_grade == "Pass":
+        def calculate_grade(score):
+            if score < 50:
+                return 'Z'
+            elif 50 <= score < 65:
+                return 'P'
+            elif 65 <= score < 75:
+                return 'C'
+            elif 75 <= score < 85:
+                return 'D'
+            else:
+                return 'HD'
+        
+        if all_passed:
+            
             pass_students.append([
                 student['student_id'], 
                 student['name'], 
                 student['email'], 
                 average_mark, 
-                overall_grade
+                calculate_grade(average_mark)
             ])
         else:
-            fail_students.append([
-                student['student_id'], 
-                student['name'], 
-                student['email'], 
-                average_mark, 
-                overall_grade
-            ])
+            # Record the failed course information
+            fail_students.extend(failed_courses)
+            
 
-    headers = [["Student Id", "Student Name", "Student Email", "Average Mark", "Overall Grade"]]
-
+    headers_pass = [["Student Id", "Student Name", "Student Email", "Average Mark", "Overall Grade"]]
+    headers_fail = [["Student Id", "Student Name", "Student Email", "Subject Name", "Mark"]]
     tk.Label(screen, text="CATEGORIZE STUDENT", padx=20, pady=20,
-             font='Helvetica 16 bold').grid(row=row_existing, column=math.floor(len(headers[0])/2-1), columnspan=4, pady=(20, 20))
+             font='Helvetica 16 bold').grid(row=row_existing, column=math.floor(len(headers_pass[0])//2-1), columnspan=4, pady=(20, 20))
     row_existing += 1
 
     tk.Label(screen, text="PASS STUDENT:", pady=20,
@@ -640,8 +660,8 @@ def categorize_students():
     row_existing += 1
 
     if pass_students:
-        table(screen, pass_students, headers, row_existing)
-        row_existing += len(pass_students) + 1  # 更新行数，包括一行标题
+        table(screen, pass_students, headers_pass, row_existing)
+        row_existing += len(pass_students) + 1  
     else:
         tk.Label(screen, text="NOTHING TO SHOW", padx=20, pady=20,
                  font='Helvetica 16 bold').grid(row=row_existing, column=1, columnspan=2)
@@ -652,8 +672,8 @@ def categorize_students():
     row_existing += 1
 
     if fail_students:
-        table(screen, fail_students, headers, row_existing)
-        row_existing += len(fail_students) + 1  # 更新行数，包括一行标题
+        table(screen, fail_students, headers_fail, row_existing)
+        row_existing += len(fail_students) + 1  
     else:
         tk.Label(screen, text="NOTHING TO SHOW", padx=20, pady=20,
                  font='Helvetica 16 bold').grid(row=row_existing, column=1, columnspan=2)
@@ -661,7 +681,7 @@ def categorize_students():
 
     button = tk.Button(screen, text="Back to Admin System", bg='red', fg='white',
                        font='Helvetica 14', command=show_admin_menu, height=2)
-    button.grid(column=math.floor(len(headers[0])//2), columnspan=2, pady=(20, 20))
+    button.grid(column=math.floor(len(headers_pass[0])//2), columnspan=2, pady=(20, 20))
 
 
 def remove_student_by_id():

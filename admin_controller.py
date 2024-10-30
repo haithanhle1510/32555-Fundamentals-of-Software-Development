@@ -107,34 +107,82 @@ def categorise_student():
     ]
     fail_students = []
     pass_students = []
+    
+  # Only select students who are registered for the course
+    student_enrolled = [student for student in studentList if len(student['enrollment_list']) > 0]
+
+    fail_students = []
+    pass_students = []
 
     for student in student_enrolled:
+        marks = []  
+        all_passed = True  # Assuming that the student passes all courses
+        failed_courses = []  
+        
+        # Check each course of the student
         for enrollment_record in student['enrollment_list']:
-            student_record_with_enrollment_details = {
-                'student_id': student['student_id'],
-                'student_name': student['name'],
-                'student_email': student['email'],
-                'subject_name': enrollment_record['subject_name'],
-                'mark': enrollment_record['mark'],
-                'grade': enrollment_record['grade'],
-            }
-
-            if enrollment_record['mark'] >= 50:
-                pass_students.append(student_record_with_enrollment_details)
+            mark = enrollment_record['mark']
+            marks.append(mark)
+            
+            # If any course score is below 50, set it to fail
+            if mark < 50:
+                all_passed = False
+                failed_courses.append([
+                    student['student_id'], 
+                    student['name'], 
+                    student['email'], 
+                    enrollment_record['subject_name'], 
+                    enrollment_record['mark'], 
+            ])
+        
+        # Calculate average score
+        average_mark = sum(marks) / len(marks)
+        def calculate_grade(score):
+            if score < 50:
+                return 'Z'
+            elif 50 <= score < 65:
+                return 'P'
+            elif 65 <= score < 75:
+                return 'C'
+            elif 75 <= score < 85:
+                return 'D'
             else:
-                fail_students.append(student_record_with_enrollment_details)
+                return 'HD'
+        
+        
+        if all_passed:
+            
+            pass_students.append([
+                student['student_id'], 
+                student['name'], 
+                student['email'], 
+                average_mark, 
+                calculate_grade(average_mark)
+            ])
+        else:
+            # Record the failed course information
+            fail_students.extend(failed_courses)
+            
+    
+    # Defines the mapping between column names and dictionary keys
+    keys_pass = ["student_id", "name", "email", "average_mark", "overall_grade"]
+    keys_fail = ["student_id", "name", "email", "mark", "grade"]
+    # Convert a 2D list to a list of dictionaries
+    pass_students_dict = [dict(zip(keys_pass, student)) for student in pass_students]
+    fail_students_dict = [dict(zip(keys_fail, student)) for student in fail_students]    
+    headers_pass = ["Student Id", "Student Name", "Student Email", "Average Mark", "Overall Grade"]
+    headers_fail = ["Student Id", "Student Name", "Student Email", "Subject Name", "Mark"]
 
-    headers = ["Student Id", "Student Name", "Student Email",
-               "Subject Name", "Mark", 'Grade']
+    # old headers = ["Student Id", "Student Name", "Student Email", "Subject Name", "Mark", 'Grade']
 
     print_successful_message("PASS STUDENT:")
     if (len(pass_students) > 0):
-        print_list_in_table(pass_students, headers)
+        print_list_in_table(pass_students_dict, headers_pass)
     else:
         print_information_message("  NOTHING TO SHOW \n")
 
     print_errors_message("FAIL STUDENT:")
     if (len(fail_students) > 0):
-        print_list_in_table(fail_students, headers)
+        print_list_in_table(fail_students_dict, headers_fail)
     else:
         print_information_message("  NOTHING TO SHOW \n")
