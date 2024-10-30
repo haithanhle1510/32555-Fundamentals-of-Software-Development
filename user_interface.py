@@ -449,9 +449,11 @@ def get_students_by_grade():
     database = Database()
     clear_window(root)
     # Creating Canvas and Scrollbar
-    screen_canvas = tk.Canvas(root)
-    screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
+    screen_canvas = tk.Canvas(root, width=1100, height=700)
+    screen_canvas.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    # screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    
+    
     scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
@@ -569,16 +571,18 @@ def get_students_by_grade():
 def categorize_students():
     database = Database()
     clear_window(root)
-   # Creating Canvas and Scrollbar
-    screen_canvas = tk.Canvas(root)
-    screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
+  # Creating Canvas and Scrollbar
+    screen_canvas = tk.Canvas(root, width=1100, height=700)
+    screen_canvas.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    # screen_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    
+    
     scrollbar = tk.Scrollbar(root, orient="vertical", command=screen_canvas.yview)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     # Place the Frame in the Canvas
     screen = tk.Frame(screen_canvas)
-    screen_canvas.create_window((0, 0), window=screen, anchor="nw")
+    screen_canvas.create_window((10, 0), window=screen, anchor="n")
     screen_canvas.configure(yscrollcommand=scrollbar.set)
     
     # Update the scrollregion of the Canvas
