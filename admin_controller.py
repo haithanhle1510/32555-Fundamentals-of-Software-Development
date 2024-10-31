@@ -109,23 +109,27 @@ def categorise_student():
     pass_students = []
 
     for student in student_enrolled:
+        marks = []
         for enrollment_record in student['enrollment_list']:
-            student_record_with_enrollment_details = {
-                'student_id': student['student_id'],
-                'student_name': student['name'],
-                'student_email': student['email'],
-                'subject_name': enrollment_record['subject_name'],
-                'mark': enrollment_record['mark'],
-                'grade': enrollment_record['grade'],
-            }
+            marks.append(enrollment_record['mark'])
 
-            if enrollment_record['mark'] >= 50:
-                pass_students.append(student_record_with_enrollment_details)
-            else:
-                fail_students.append(student_record_with_enrollment_details)
+        average_mark = sum(marks) / len(marks)
+        overall_grade = "Pass" if average_mark >= 50 else "Fail"
 
-    headers = ["Student Id", "Student Name", "Student Email",
-               "Subject Name", "Mark", 'Grade']
+        student_record_with_enrollment_details = {
+            'student_id': student['student_id'],
+            'student_name': student['name'],
+            'student_email': student['email'],
+            'average_mark': average_mark,
+            'overall_grade': overall_grade,
+        }
+        if overall_grade == "Pass":
+            pass_students.append(student_record_with_enrollment_details)
+        else:
+            fail_students.append(student_record_with_enrollment_details)
+
+    headers = ["Student Id", "Student Name",
+               "Student Email", "Average Mark", 'Overall Grade']
 
     print_successful_message("PASS STUDENT:")
     if (len(pass_students) > 0):
