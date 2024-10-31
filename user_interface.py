@@ -270,8 +270,9 @@ def show_change_password_screen(student: Student):
     backBtn = tk.Button(menu,
                         bg='red', fg='white',
                         font='Helvetica 15 bold',
-                        text="Back", height=2, command=show_student_main_system)
+                        text="Back", height=2, command=lambda: show_student_main_system(student))
     backBtn.grid(column=1, row=2, sticky=tk.E, padx=5, pady=10)
+    
 
 
 def change_password_handler(new_password, confirm_new_password, student: Student):
