@@ -44,7 +44,8 @@ def process_student_register():
 def post_student_register(email, password, name):
     database = Database()
     student = Student(name, email, generate_hash_password(
-        password), generate_new_student_id())
+        password), generate_new_student_id(), [])
+    print(student.read_student_information())
     database.write_new_data_to_file(
         'student.data', student.read_student_information())
     return student.read_student_information()
