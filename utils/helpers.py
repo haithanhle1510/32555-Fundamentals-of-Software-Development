@@ -16,6 +16,10 @@ def validate_email(email: str) -> bool:
 
 
 def is_valid_password(password):
+     # Check if the password is empty
+    if not password:
+        return False
+    
     # Check if the password starts with an upper-case character
     if not password[0].isupper():
         return False
