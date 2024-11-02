@@ -86,8 +86,8 @@ class Student(User):
                     "mark": mark,
                     "grade": grade
                 })
-                print(f"Registered subject {select_subject['subject_name']} ({
-                    select_subject['subject_id']}) with mark {mark} and grade {grade}.")
+                print(f"""Registered subject {select_subject['subject_name']} ({
+                    select_subject['subject_id']})  with mark {mark} and grade {grade}.""")
 
         # Update the new data to the file
         self.database.update_data_to_file(
@@ -122,8 +122,8 @@ class Student(User):
         headers = ["Subject ID", "Subject Name", "Mark", "Grade"]
         print_list_in_table(existing_enrollment_list, headers)
         # Print an existing subject ID
-        print(f"Available subject IDs: {
-            [enrollment_record['subject_id'] for enrollment_record in existing_enrollment_list]}")
+        print(f"""Available subject IDs: {
+            [enrollment_record['subject_id'] for enrollment_record in existing_enrollment_list]}""")
 
         # Remove leading and trailing spaces
         subject_id = input("Enter the course ID to delete: ").strip()
