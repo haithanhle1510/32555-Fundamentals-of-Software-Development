@@ -4,7 +4,7 @@ This is our University Enrollment System App
 
 ## Dependencies Installation
 ```
-pip install requriments.txt
+pip install -r requriments.txt
 ```
 ## Tkinter installation via apt
 ```
