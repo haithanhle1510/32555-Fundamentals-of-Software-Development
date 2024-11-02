@@ -6,7 +6,10 @@ This is our University Enrollment System App
 ```
 pip install requriments.txt
 ```
-
+## Tkinter installation via apt
+```
+sudo apt install python3-tk
+```
 
 To run the CLI App please run the main.py with command 
 ```
