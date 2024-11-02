@@ -2,11 +2,24 @@
 
 This is our University Enrollment System App 
 
+## Dependencies Installation
+```
+pip install requriments.txt
+```
+## Tkinter installation via apt
+```
+sudo apt install python3-tk
+```
+
 To run the CLI App please run the main.py with command 
-**python3 main.py** or **python main.py**
+```
+python3 main.py
+```
 
 To run the GUI App please run the main.py with command 
-**python3 user_interface.py** or **python user_interface.py**
+```
+python3 user_interface.py
+```
 
 We have 2 system are **ADMIN** and **STUDENT** system 
 

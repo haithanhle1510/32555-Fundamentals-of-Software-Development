@@ -325,8 +325,8 @@ def enroll_subjects(student: Student):
                 "mark": mark,
                 "grade": grade
             })
-            success_message.append(f"Registered subject {select_subject['subject_name']} ({
-                select_subject['subject_id']}) with mark {mark} and grade {grade}.")
+            success_message.append(f"""Registered subject {select_subject['subject_name']} ({
+                select_subject['subject_id']}) with mark {mark} and grade {grade}.""")
 
     messagebox.showinfo(
         "Enrol subject", "\n".join(success_message))
@@ -714,8 +714,8 @@ def remove_student_event_handler(student_id, studentList, database: Database):
     if any(student['student_id'] == student_id for student in studentList):
         database.remove_data_from_file('student.data', student_id)
         messagebox.showinfo(
-            "Remove student", f"Student {
-                student_id} have been removed from the system."
+            "Remove student", f"""Student {
+                student_id} have been removed from the system."""
         )
         show_admin_menu()
 
