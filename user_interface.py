@@ -311,7 +311,7 @@ def enroll_subjects(student: Student):
 
     success_message = []
 
-    while len(student.enrollment_list) < max_courses:
+    if len(student.enrollment_list) < max_courses:
         select_subject = random.choice(
             available_subject).read_subject_detail()
 

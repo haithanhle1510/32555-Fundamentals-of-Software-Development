@@ -73,7 +73,7 @@ class Student(User):
                 "You have already registered for the maximum number of subjects.")
             return
 
-        while len(self.enrollment_list) < max_courses:
+        if len(self.enrollment_list) < max_courses:
             select_subject = random.choice(
                 available_subject).read_subject_detail()
 
